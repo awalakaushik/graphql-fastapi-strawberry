@@ -1,6 +1,6 @@
 import uuid
 from Shared.supabase_client import supabase
-from Shared.models import Task
+from Shared.models import Task, TaskInput
 
 class TaskRepository:
     
@@ -15,7 +15,7 @@ class TaskRepository:
         return task
     
     @staticmethod
-    def create(__self__, task: Task):
+    def create(__self__, task: TaskInput):
         new_task = supabase.table(__self__.TASKS).insert(task).execute()
         return new_task
     

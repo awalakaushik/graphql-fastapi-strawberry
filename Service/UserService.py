@@ -1,7 +1,7 @@
 from typing import List
 import uuid
 from Repository.UserRepository import UserRepository
-from Shared.models import User
+from Shared.models import User, UserInput
 
 class UserService:
     
@@ -17,9 +17,11 @@ class UserService:
         return User.toDto(user)
     
     @staticmethod
-    def create(user: User) -> User:
-        UserRepository.create(user)
-        return user
+    def create(username: str, email: str) -> User:
+        user_input = UserInput(username=username, email=email)
+        create_response = UserRepository.create(user_input)
+        new_user = User.toDto(create_response.data[0])
+        return new_user
 
     @staticmethod
     def update(userId: uuid.UUID, user: User) -> User:

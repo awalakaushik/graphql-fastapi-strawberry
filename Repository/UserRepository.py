@@ -1,5 +1,6 @@
+import uuid
 from Shared.supabase_client import supabase
-from Shared.models import User
+from Shared.models import UserInput
 
 class UserRepository:
     
@@ -9,21 +10,22 @@ class UserRepository:
         return users
     
     @staticmethod
-    def get_by_id(userId: int):
+    def get_by_id(userId: uuid.UUID):
         user = supabase.table("Users").select("*").eq("id", userId).single().execute()
         return user
     
     @staticmethod
-    def create(__self__, user: User):
-        new_user = supabase.table("Users").insert(user).execute()
-        return new_user
+    def create(new_user: UserInput):
+        new_user_dict = new_user.__dict__
+        api_response = supabase.table("Users").insert(new_user_dict).execute()
+        return api_response
     
     @staticmethod
-    def update(userId: int, user: User):
+    def update(userId: uuid.UUID, user: UserInput):
         updated_user = supabase.table("Users").update(user).eq("id", userId).execute()
         return updated_user
     
     @staticmethod
-    def delete(userId: int):
+    def delete(userId: uuid.UUID):
         deleted_user = supabase.table("Users").delete().eq("id", userId).execute()
         return deleted_user

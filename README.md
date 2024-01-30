@@ -22,7 +22,7 @@ This project demonstrates how to set up a GraphQL server using Python's FastAPI 
 ### 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/yourrepository.git
+git clone https://github.com/awalakaushik/graphql-fastapi-strawberry.git
 ```
 
 ### 2. Install the dependencies:

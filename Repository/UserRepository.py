@@ -15,6 +15,16 @@ class UserRepository:
         return user
     
     @staticmethod
+    def get_by_email(email: str):
+        user = supabase.table("Users").select("*").eq("email", email).single().execute()
+        return user
+    
+    @staticmethod
+    def get_by_username(username: str):
+        user = supabase.table("Users").select("*").eq("username", username).single().execute()
+        return user
+    
+    @staticmethod
     def create(new_user: UserInput):
         new_user_dict = new_user.__dict__
         api_response = supabase.table("Users").insert(new_user_dict).execute()

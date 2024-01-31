@@ -14,7 +14,17 @@ class UserService:
     @staticmethod
     def get_by_id(userId) -> User:
         user = UserRepository.get_by_id(userId)
-        return User.toDto(user)
+        return User.toDto(user.data)
+    
+    @staticmethod
+    def get_by_email(email: str) -> User:
+        user = UserRepository.get_by_email(email)
+        return User.toDto(user.data)
+    
+    @staticmethod
+    def get_by_username(username: str) -> User:
+        user = UserRepository.get_by_username(username)
+        return User.toDto(user.data)
     
     @staticmethod
     def create(username: str, email: str) -> User:

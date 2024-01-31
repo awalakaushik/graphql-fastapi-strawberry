@@ -24,11 +24,14 @@ class UserService:
         return new_user
 
     @staticmethod
-    def update(userId: uuid.UUID, user: User) -> User:
-        UserRepository.update(userId, user)
-        return user
+    def update(userId: uuid.UUID, email: str, username: str) -> User:
+        user_input = UserInput(username=username, email=email)
+        update_response = UserRepository.update(userId, user_input)
+        updated_user = User.toDto(update_response.data[0])
+        return updated_user
     
     @staticmethod
-    def delete(userId) -> int:
-        UserRepository.delete(userId)
-        return userId
+    def delete(userId) -> uuid.UUID:
+        delete_response = UserRepository.delete(userId)
+        deleted_user_id = delete_response.data[0]['id']
+        return deleted_user_id

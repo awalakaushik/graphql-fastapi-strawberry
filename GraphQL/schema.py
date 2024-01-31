@@ -1,4 +1,5 @@
 import asyncio
+import random
 import typing
 
 import strawberry
@@ -6,8 +7,8 @@ from strawberry.asgi import GraphQL
 
 from GraphQL.queries.task_queries import TaskQueries
 from GraphQL.queries.user_queries import UserQueries
-from Service.UserService import UserService
-from Shared.models import User
+
+from GraphQL.mutations.user_mutations import UserMutations
 
 
 @strawberry.type
@@ -15,18 +16,17 @@ class Query(UserQueries, TaskQueries):
     pass
 
 @strawberry.type
-class Mutation:
-    @strawberry.mutation
-    def create_user(self, email: str, username: str) -> User:
-        return UserService.create(username=username, email=email)
+class Mutation(UserMutations):
+    pass
 
 @strawberry.type
 class Subscription:
     @strawberry.subscription
-    async def count(self, target: int = 100) -> typing.AsyncGenerator[int, None]:
-        for i in range(target):
-            yield i
-            await asyncio.sleep(0.5)
+    async def random_task(self, target: int = 100) -> typing.AsyncGenerator[str, None]:
+        task_names = ["Design new logo", "Implement authentication", "Fix broken links", "Write blog post", "Optimize database"]
+        for _ in range(target):
+            yield random.choice(task_names)
+            await asyncio.sleep(5)
 
 schema = strawberry.Schema(query=Query, mutation=Mutation, subscription=Subscription)
 graphql_app = GraphQL(schema=schema)

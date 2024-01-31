@@ -22,7 +22,8 @@ class UserRepository:
     
     @staticmethod
     def update(userId: uuid.UUID, user: UserInput):
-        updated_user = supabase.table("Users").update(user).eq("id", userId).execute()
+        update_user_dict = user.__dict__
+        updated_user = supabase.table("Users").update(update_user_dict).eq("id", userId).execute()
         return updated_user
     
     @staticmethod
